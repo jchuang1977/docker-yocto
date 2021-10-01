@@ -3,7 +3,7 @@
 # Author:  Yen-Chin, Lee <yenchin@weintek.com>
 # Command format: Instruction [arguments / command] ..
 
-FROM ubuntu:14.04
+FROM ubuntu:20.04
 MAINTAINER Yen-Chin, Lee, coldnew.tw@gmail.com
 
 # Add 32bit package in package list
