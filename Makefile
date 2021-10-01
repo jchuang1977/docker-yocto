@@ -7,4 +7,4 @@ run:
 	docker run -it ubuntu:20.04
 
 deploy:
-	docker push ubuntu:20.04
+	docker push jchuang1977/yocto-build
