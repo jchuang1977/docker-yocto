@@ -29,7 +29,7 @@ RUN apt-get install -y libsdl1.2-dev xterm
 RUN apt-get install -y make xsltproc docbook-utils fop dblatex xmlto
 
 # OpenEmbedded Self-Test
-RUN apt-get install -y python-git
+RUN apt-get install -y python-git-doc
 
 # Extra package for build with NXP's images
 RUN apt-get install -y \
