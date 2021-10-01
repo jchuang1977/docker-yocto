@@ -5,7 +5,7 @@
 
 FROM ubuntu:20.04
 MAINTAINER Yen-Chin, Lee, coldnew.tw@gmail.com
-ENV TZ=Asia/Taipe
+ENV TZ=Asia/Taipei
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Add 32bit package in package list
