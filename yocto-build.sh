@@ -28,8 +28,9 @@ SNAME="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")"
 
 # check for directory architecture
 YOCTODIR="${SDIR}"
-IMAGE="ubuntu:20.04"
-CONTAINER="yocto-build"
+#IMAGE="ubuntu:20.04"
+IMAGE=""
+CONTAINER=""
 DOCKER_ARGS=""
 
 ############################################################
@@ -98,7 +99,7 @@ FUNCDOC
         source "${HOME}/.yocto-build.sh"
 
         if [ "$IMAGE" != "coldnew/yocto-build" ]; then
-            INFO "CONTAINER: $CONTAINER"
+            INFO "IMAGE: $IMAGE"
         fi
 
         if [ "$CONTAINER" != "yocto-build" ]; then
@@ -230,6 +231,9 @@ do
         # Try to start an existing/stopped container with thie give name $CONTAINER
         # otherwise, run a new one.
         YOCTODIR=$(readlink -m "$2")
+        read_config
+        INFO $IMAGE
+        INFO $CONTAINER
         if docker inspect $CONTAINER > /dev/null 2>&1 ; then
             INFO "Reattaching to running container $CONTAINER"
             docker start -i ${CONTAINER}
@@ -238,7 +242,7 @@ do
             USER=$(whoami)
             read_config
             docker run -it \
-                   --volume="$YOCTODIR:/yocto" \
+                   --volume="$YOCTODIR:/workdir" \
                    --volume="${HOME}/.ssh:/home/${USER}/.ssh" \
                    --volume="${HOME}/.gitconfig:/home/${USER}/.gitconfig" \
                    --volume="/etc/localtime:/etc/localtime:ro" \
