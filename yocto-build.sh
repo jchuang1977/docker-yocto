@@ -121,7 +121,8 @@ function usage {
 Usage: $0 <arguments>
 
 Arguments:
-
+    -i, --image     :  IMAGES variable 
+    -c, --container : CONTAINER variable
     -a, --attach    : attach to current runing container
     -s, --shell     : spawn a new shell to current container
     -w, --workdir   : yocto workspace to shared with docker container
@@ -166,7 +167,7 @@ EOF
 
 # NOTE: This requires GNU getopt.  On Mac OS X and FreeBSD, you have
 # to install this separately
-TEMP=`getopt -o uasw:rph --long upgrade,attach,shell,workdir:,rm,pull,help -- "$@"`
+TEMP=`getopt -o ciuasw:rph --long container,image,upgrade,attach,shell,workdir:,rm,pull,help -- "$@"`
 
 if [ $? != 0 ] ; then
     usage
@@ -183,6 +184,18 @@ fi
 while true
 do
     case "$1" in
+    -c | --container)
+        CONTAINER=$2
+        INFO $CONTAINER     
+        shift 2
+        continue
+        ;;    
+    -i | --image)
+        IMAGE=$2
+        INFO $IMAGE      
+        shift 2
+        continue
+        ;;
     -u | --upgrade)
         INFO "Upgrade script $NAME"
         curl https://raw.githubusercontent.com/coldnew/docker-yocto/master/yocto-build.sh > /tmp/$SNAME
@@ -231,16 +244,17 @@ do
         # Try to start an existing/stopped container with thie give name $CONTAINER
         # otherwise, run a new one.
         YOCTODIR=$(readlink -m "$2")
-        read_config
+#        read_config
         INFO $IMAGE
         INFO $CONTAINER
+
         if docker inspect $CONTAINER > /dev/null 2>&1 ; then
             INFO "Reattaching to running container $CONTAINER"
             docker start -i ${CONTAINER}
         else
             INFO "Creating container $CONTAINER"
             USER=$(whoami)
-            read_config
+            #read_config
             docker run -it \
                    --volume="$YOCTODIR:/workdir" \
                    --volume="${HOME}/.ssh:/home/${USER}/.ssh" \
